@@ -18,13 +18,15 @@ namespace AnyoneForTennis.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly AppDBContext _context;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, AppDBContext context)
+        public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, AppDBContext context, RoleManager<IdentityRole> roleManager)
         {
             _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _roleManager = roleManager;
         }
 
         [Authorize]
@@ -101,6 +103,8 @@ namespace AnyoneForTennis.Controllers
 
                     _context.Members.Add(member);
                     _context.SaveChanges();
+
+                    await _userManager.AddToRoleAsync(user, "Admin");
                 }
                 else
                 {
@@ -117,6 +121,8 @@ namespace AnyoneForTennis.Controllers
 
                         _context.Coaches.Add(member);
                         _context.SaveChanges();
+
+                        await _userManager.AddToRoleAsync(user, "Coach");
                     }
                     else
                     {
@@ -130,6 +136,8 @@ namespace AnyoneForTennis.Controllers
 
                         _context.Members.Add(member);
                         _context.SaveChanges();
+
+                        await _userManager.AddToRoleAsync(user, "Member");
                     }
                 }
                 
