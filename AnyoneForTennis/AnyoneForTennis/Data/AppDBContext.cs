@@ -23,6 +23,8 @@ namespace AnyoneForTennis.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<EventMember>()
                 .HasKey(em => new { em.EventId, em.MemberId });
             modelBuilder.Entity<EventMember>()

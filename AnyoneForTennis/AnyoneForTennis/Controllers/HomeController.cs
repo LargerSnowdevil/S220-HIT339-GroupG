@@ -56,13 +56,13 @@ namespace AnyoneForTennis.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(String username, String password)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            var user = await _userManager.FindByNameAsync(username);
+            var user = await _userManager.FindByNameAsync(model.Username);
 
             if (user != null)
             {
-                var result = await _signInManager.PasswordSignInAsync(user, password, false, false);
+                var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
 
                 if (result.Succeeded)
                 {
@@ -148,5 +148,12 @@ namespace AnyoneForTennis.Controllers
             }
             return View();
         }
+
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index");
+        }
+
     }
 }

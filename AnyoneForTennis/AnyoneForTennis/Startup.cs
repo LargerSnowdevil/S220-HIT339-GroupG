@@ -46,6 +46,14 @@ namespace AnyoneForTennis
                 config.Cookie.Name = "LoginSession.Cookie";
                 config.LoginPath = "/Home/Login";
             });
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(900);
+                options.Cookie.IsEssential = true;
+                options.Cookie.HttpOnly = true;
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
