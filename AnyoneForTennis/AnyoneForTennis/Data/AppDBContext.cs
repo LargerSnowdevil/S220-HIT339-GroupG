@@ -1,4 +1,5 @@
 ﻿using AnyoneForTennis.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AnyoneForTennis.Data
 {
-    public class AppDBContext : DbContext
+    public class AppDBContext : IdentityDbContext
     {
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {
@@ -22,6 +23,8 @@ namespace AnyoneForTennis.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<EventMember>()
                 .HasKey(em => new { em.EventId, em.MemberId });
             modelBuilder.Entity<EventMember>()
