@@ -1,4 +1,5 @@
 ﻿using AnyoneForTennis.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AnyoneForTennis.Data
 {
-    public class AppDBContext : DbContext
+    public class AppDBContext : IdentityDbContext
     {
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {
