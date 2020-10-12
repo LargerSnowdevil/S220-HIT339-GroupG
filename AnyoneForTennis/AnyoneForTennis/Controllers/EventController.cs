@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AnyoneForTennis.Data;
 using AnyoneForTennis.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AnyoneForTennis.Controllers
 {
@@ -44,8 +45,10 @@ namespace AnyoneForTennis.Controllers
         }
 
         // GET: Event/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
+            ViewData["CoachId"] = new SelectList(_context.Coaches, "CoachId", "Name");
             return View();
         }
 
@@ -54,14 +57,19 @@ namespace AnyoneForTennis.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EventId,Name,Date,Location")] Event @event)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Create([Bind("EventId,Name,Date,Location")] Event @event, int RunningCoach)
         {
             if (ModelState.IsValid)
             {
+                @event.RunningCoach = _context.Coaches.Find(RunningCoach);
+
                 _context.Add(@event);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CoachId"] = new SelectList(_context.Coaches, "CoachId", "Name", @event.RunningCoach.CoachId);
             return View(@event);
         }
 

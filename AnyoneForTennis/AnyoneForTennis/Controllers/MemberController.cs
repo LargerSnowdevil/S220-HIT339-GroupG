@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AnyoneForTennis.Data;
 using AnyoneForTennis.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AnyoneForTennis.Controllers
 {
@@ -20,6 +21,7 @@ namespace AnyoneForTennis.Controllers
         }
 
         // GET: Member
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Members.ToListAsync());
