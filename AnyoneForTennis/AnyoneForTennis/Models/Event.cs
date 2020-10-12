@@ -13,6 +13,7 @@ namespace AnyoneForTennis.Models
 
         public string Name { get; set; }
 
+        [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
         public string Location { get; set; }
